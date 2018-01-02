@@ -425,31 +425,25 @@ class GUMP
                             $method = 'validate_'.$rule;
                         }
 
-                        //self::$validation_methods[$rule] = $callback;
-
                         if (is_callable(array($this, $method))) {
                             $result = $this->$method(
                                 $field, $input, $param
                             );
 
                             if (is_array($result)) {
-                                if (array_search($result['field'], array_column($this->errors, 'field')) === false) {
                                     $this->errors[] = $result;
-                                }
                             }
 
                         } elseif(isset(self::$validation_methods[$rule])) {
                             $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
                             if($result === false) {
-                                if (array_search($result['field'], array_column($this->errors, 'field')) === false) {
                                     $this->errors[] = array(
                                         'field' => $field,
                                         'value' => $input[$field],
                                         'rule' => $rule,
                                         'param' => $param,
                                     );
-                                }
                             }
 
                         } else {
